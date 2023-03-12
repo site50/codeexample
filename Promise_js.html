@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>EXA</title>
+		<meta charset="utf-8" />
+	</head>
+	<body>
+		<h3 id='show'>How show with Javascript  multiple steps using a Promise, each step is one array,  
+		were id is unique, duplicate id goes to the next step in the next array</h3>
+		<br></br>
+		<div id="demo1">Step 1: </div>
+		<div id="demo2">Step 2: </div>
+		<div id="demo3">Step 3: </div>
+		<div id="demo4">Step 4: </div>
+		<div id="demo5">Step 5: </div>
+		<div id="demo6">Step 6: </div>
+		<div id="demo7">Step 7: </div>
+		<h3 id="box"></h3>
+		<script >
+			var step1=[
+			{id:1, name:'1A1'},{id:3, name:'1A3'},{id:5, name:'1A51'},
+			{id:5, name:'1A52'},{id:5, name:'1A53'},{id:5, name:'1A54'},
+			{id:5, name:'1A55'},{id:5, name:'1A56'},{id:5, name:'15A57'}
+			];//5-7штук
+			var step2 = [{ id:22, name: '3A22' }, { id:2, name: '3A2' }, { id:13, name: '3A13' }, { id:2, name: '3A2' }];//2-2шт
+			var step3 = [{ id:12, name: '2A22' }, { id:2, name: '2A2' }, { id:13, name: '2A213' }, { id:12, name: '2A12' }];//12-2т
+			var step4 = [{ id:32, name: '4A32' }, { id:12, name: '4A12' }, { id:13, name: '4A13' }, { id:2, name: '4A2' }];//
+			var step5 = [{ id:10, name: '5A10' }, { id:10, name: '5A10' }, { id:100, name: '5A100' }];//10-2шт
+			var step6 = [{ id:1, name: '6A1' }, { id: 2, name: '6A2' }];//
+			var step7 = [{ id:1, name: '16A1' }, { id: 2, name: '26A2' }];//
+			var arr = [step1, step2, step3, step4, step5, step6, step7]
+			
+			console.log('1)5-7штук; 2)12-2т ; 3)2-2шт; 4)0; 5)10-2шт; 6)0');
+			console.log(`%c last array :1, 2, 10, 5, 5`, `color:green`);
+			
+			var duble = [];
+			const arM = () => {
+				var duble = [];
+				var new_ar = []
+				var step = []
+				for (let i = 0; i < arr.length; i++) {
+					new_ar[i] = arr[i].concat(duble)
+					duble = new_ar[i].filter((item, index) => { return index != new_ar[i].findIndex(p => item.id === p.id); })
+					console.log('duplicate', duble)
+					step[i] = new_ar[i].filter((item, index) => { return index === new_ar[i].findIndex(p => item.id === p.id); })
+				}
+				return [new_ar, duble, step]
+			}
+			var b = arM();
+			//console.log('new_ar ',b[0])
+			//console.log('duble ',b)
+			//console.log('step ',b[2])
+			var num_step = 0;
+			var number_step = 0;
+			const boxA = i => new Promise(resolve => setTimeout(() => resolve(i), 1000));
+			const func = async () => {
+				const arr = b[2];
+				for (i of arr) {
+					++num_step;
+					const box = await boxA(i);
+					for (x of i) {
+						console.log('step ',num_step, ':', x.id, 'name-', x.name); 
+						document.getElementById('demo'+num_step).innerHTML += ('  id:'+ x.id+ ', name:'+ x.name+' ,');
+						
+					}}
+					console.log("All steps completed !!!");
+					document.getElementById('box').innerHTML ="All steps completed !!!";
+			};
+			func();
+			
+		</script>
+	</body>
+	<html>
+		
